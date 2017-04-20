@@ -67,8 +67,22 @@ namespace Facepunch.UnityBatch
                 }
             }
 
-            System.Threading.Thread.Sleep( 500 );
-            System.IO.File.Delete( logPath );
+            //
+            // Try to delete the log file, while handling access errors
+            //
+            for (int i=0; i<10; i++ )
+            {
+                try
+                {
+                    System.IO.File.Delete( logPath );
+                }
+                catch ( System.IO.IOException )
+                {
+                    Console.WriteLine( $"Couldn't delete {logPath}.. trying again.." );
+                    System.Threading.Thread.Sleep( 1000 );
+                    continue;
+                }
+            }
 
             if ( process.ExitCode != 0 )
             {
