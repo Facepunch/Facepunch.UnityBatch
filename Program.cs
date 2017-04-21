@@ -82,7 +82,7 @@ namespace Facepunch.UnityBatch
                 catch ( System.IO.IOException )
                 {
                     Console.WriteLine( $"Couldn't delete {logPath}.. trying again.." );
-                    System.Threading.Thread.Sleep( 1000 );
+                    System.Threading.Thread.Sleep( 5000 );
                     continue;
                 }
             }
