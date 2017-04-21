@@ -42,6 +42,7 @@ namespace Facepunch.UnityBatch
             process.StartInfo.FileName = unityPath;
             process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             process.StartInfo.WorkingDirectory = projectPath;
+            process.StartInfo.ErrorDialog = false;
             process.StartInfo.Arguments = commandLine;
 
             Console.WriteLine( process.StartInfo.FileName );
@@ -70,19 +71,38 @@ namespace Facepunch.UnityBatch
             string fullLogFile = "";
 
             //
-            // Try to delete the log file, while handling access errors
+            // Try to read the log file
             //
-            for (int i=0; i<10; i++ )
+            for ( int i = 0; i < 60; i++ )
             {
                 try
                 {
                     fullLogFile = System.IO.File.ReadAllText( logPath );
+                    break;
+                }
+                catch ( System.IO.IOException )
+                {
+                    Console.WriteLine( $"Couldn't read {logPath}.. trying again.." );
+                    System.Threading.Thread.Sleep( 1000 );
+                    continue;
+                }
+            }
+
+
+            //
+            // Try to delete the log file
+            //
+            for (int i=0; i<60; i++ )
+            {
+                try
+                {
                     System.IO.File.Delete( logPath );
+                    break;
                 }
                 catch ( System.IO.IOException )
                 {
                     Console.WriteLine( $"Couldn't delete {logPath}.. trying again.." );
-                    System.Threading.Thread.Sleep( 5000 );
+                    System.Threading.Thread.Sleep( 1000 );
                     continue;
                 }
             }
