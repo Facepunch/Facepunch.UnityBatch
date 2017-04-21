@@ -67,6 +67,8 @@ namespace Facepunch.UnityBatch
                 }
             }
 
+            string fullLogFile = "";
+
             //
             // Try to delete the log file, while handling access errors
             //
@@ -74,6 +76,7 @@ namespace Facepunch.UnityBatch
             {
                 try
                 {
+                    fullLogFile = System.IO.File.ReadAllText( logPath );
                     System.IO.File.Delete( logPath );
                 }
                 catch ( System.IO.IOException )
@@ -87,6 +90,12 @@ namespace Facepunch.UnityBatch
             if ( process.ExitCode != 0 )
             {
                 Console.WriteLine( $"Failed: Unity exit code was {process.ExitCode}" );
+
+                if ( fullLogFile .Contains( "Batchmode quit successfully invoked - shutting down!" ) || fullLogFile.Contains( "Exiting batchmode successfully now!" ) )
+                {
+                    Console.WriteLine( $"Fail seems to have happened when closing unity, rather than during the build. Counting as a success." );
+                    return 0;
+                }
             }
             else
             {
