@@ -30,7 +30,7 @@ namespace Facepunch.UnityBatch
         {
             var unityPath = $"C:/Program Files/Unity {unityVersion}/Editor/Unity.exe";
             var logPath = System.IO.Path.GetTempFileName();
-            var commandLine = $"-silent-crashes -no-dialogs -batchmode -quit {fullOptions} -logFile \"{logPath}\"";
+            var commandLine = $"-silent-crashes -no-dialogs -batchmode -quit -nographics {fullOptions} -logFile \"{logPath}\"";
 
             if ( !System.IO.File.Exists( unityPath ) )
             {
