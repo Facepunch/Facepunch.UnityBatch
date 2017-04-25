@@ -68,31 +68,10 @@ namespace Facepunch.UnityBatch
                 }
             }
 
-            string fullLogFile = "";
-
-            //
-            // Try to read the log file
-            //
-            for ( int i = 0; i < 60; i++ )
-            {
-                try
-                {
-                    fullLogFile = System.IO.File.ReadAllText( logPath );
-                    break;
-                }
-                catch ( System.IO.IOException )
-                {
-                    Console.WriteLine( $"Couldn't read {logPath}.. trying again.." );
-                    System.Threading.Thread.Sleep( 1000 );
-                    continue;
-                }
-            }
-
-
             //
             // Try to delete the log file
             //
-            for (int i=0; i<60; i++ )
+            for (int i=0; i< 5; i++ )
             {
                 try
                 {
@@ -105,21 +84,6 @@ namespace Facepunch.UnityBatch
                     System.Threading.Thread.Sleep( 1000 );
                     continue;
                 }
-            }
-
-            if ( process.ExitCode != 0 )
-            {
-                Console.WriteLine( $"Failed: Unity exit code was {process.ExitCode}" );
-
-                if ( fullLogFile .Contains( "Batchmode quit successfully invoked - shutting down!" ) || fullLogFile.Contains( "Exiting batchmode successfully now!" ) )
-                {
-                    Console.WriteLine( $"Fail seems to have happened when closing unity, rather than during the build. Counting as a success." );
-                    return 0;
-                }
-            }
-            else
-            {
-                Console.WriteLine( $"Success: Unity exit code was {process.ExitCode}" );
             }
 
             return process.ExitCode;
