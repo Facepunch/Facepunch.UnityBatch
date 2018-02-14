@@ -28,7 +28,7 @@ namespace Facepunch.UnityBatch
 
         private static int RunUnity( string unityVersion, string projectPath, string fullOptions )
         {
-            var unityPath = $"C:/Program Files/Unity {unityVersion}/Editor/Unity.exe";
+            var unityPath = $"C:/Program Files/Unity/Hub/Editor/{unityVersion}/Editor/Unity.exe";
             var logPath = System.IO.Path.GetTempFileName();
             var commandLine = $"-silent-crashes -no-dialogs -batchmode -quit {fullOptions} -logFile \"{logPath}\"";
 
