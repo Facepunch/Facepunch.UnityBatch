@@ -28,7 +28,13 @@ namespace Facepunch.UnityBatch
 
         private static int RunUnity( string unityVersion, string projectPath, string fullOptions )
         {
-            var unityPath = $"C:/Program Files/Unity/Hub/Editor/{unityVersion}/Editor/Unity.exe";
+            var unityPath = "";
+
+            if ( Environment.OSVersion.Platform == PlatformID.MacOSX )
+                unityPath = $"/Applications/Unity/Hub/Editor/{unityVersion}/Unity.app/Contents/MacOS/Unity";
+            else
+                unityPath = $"C:/Program Files/Unity/Hub/Editor/{unityVersion}/Editor/Unity.exe";
+
             var logPath = System.IO.Path.GetTempFileName();
             var commandLine = $"-silent-crashes -no-dialogs -batchmode -quit {fullOptions} -logFile \"{logPath}\"";
 
