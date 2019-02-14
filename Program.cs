@@ -30,7 +30,7 @@ namespace Facepunch.UnityBatch
         {
             var unityPath = "";
 
-            if ( Environment.OSVersion.Platform == PlatformID.MacOSX )
+            if ( Environment.OSVersion.Platform == PlatformID.MacOSX || Environment.OSVersion.Platform == PlatformID.Unix )
                 unityPath = $"/Applications/Unity/Hub/Editor/{unityVersion}/Unity.app/Contents/MacOS/Unity";
             else
                 unityPath = $"C:/Program Files/Unity/Hub/Editor/{unityVersion}/Editor/Unity.exe";
