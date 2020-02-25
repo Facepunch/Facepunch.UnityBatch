@@ -15,18 +15,22 @@ namespace Facepunch.UnityBatch
         {
             var unityVersion = "1.2.3";
             var projectPath = "project/path";
+            var quit = true;
 
             for (int i = 0; i<args.Length; i++ )
             {
                 if ( args[i] == "-unityVersion" ) unityVersion = args[i + 1];
                 if ( args[i] == "-projectPath" ) projectPath = args[i + 1];
 
+                // If present, don't include the '-quit' switch, and rely
+                // on the executed method quitting the editor manually
+                if ( args[i] == "-manual-quit" ) quit = false;
             }
 
-            return RunUnity( unityVersion, projectPath, string.Join( " ", args ) );
+            return RunUnity( unityVersion, projectPath, quit, string.Join( " ", args ) );
         }
 
-        private static int RunUnity( string unityVersion, string projectPath, string fullOptions )
+        private static int RunUnity( string unityVersion, string projectPath, bool quit, string fullOptions )
         {
             var unityPath = "";
 
@@ -35,8 +39,11 @@ namespace Facepunch.UnityBatch
             else
                 unityPath = $"C:/Program Files/Unity/Hub/Editor/{unityVersion}/Editor/Unity.exe";
 
+            if ( quit )
+                fullOptions = $"-quit {fullOptions}";
+
             var logPath = System.IO.Path.GetTempFileName();
-            var commandLine = $"-silent-crashes -no-dialogs -batchmode -quit {fullOptions} -logFile \"{logPath}\"";
+            var commandLine = $"-silent-crashes -no-dialogs -batchmode {fullOptions} -logFile \"{logPath}\"";
 
             if ( !System.IO.File.Exists( unityPath ) )
             {
